@@ -18,13 +18,6 @@
             <artifactId>postgresql</artifactId>
             <version>42.2.5</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.diogonunes/JColor -->
-        <dependency>
-            <groupId>com.diogonunes</groupId>
-            <artifactId>JColor</artifactId>
-            <version>5.0.0</version>
-        </dependency>
-
 
     </dependencies>
 
@@ -44,9 +37,9 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.0</version>
+                    <version>14</version>
                     <configuration>
-                        <release>11</release>
+                        <release>14</release>
                     </configuration>
                 </plugin>
 
@@ -80,11 +73,21 @@
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>3.0.0</version>
                     <configuration>
-                        <mainClass>com.codecool.Main</mainClass>
+                        <mainClass></mainClass>
                     </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>14</source>
+                    <target>14</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
     
