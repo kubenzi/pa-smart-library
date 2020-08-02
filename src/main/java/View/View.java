@@ -2,6 +2,8 @@ package View;
 
 import java.util.Scanner;
 
+import static com.diogonunes.jcolor.Ansi.colorize;
+
 
 public class View {
 
@@ -45,5 +47,18 @@ public class View {
             System.out.println("Enter text: ");
         }
         return input;
+    }
+
+    public void displayConfirmationRequestMessage(String title) {
+        System.out.printf("  Are you sure you want to remove book entitled: '%s'? [Y/N]%n", title);
+    }
+
+    public void displayRemovalMessage(String type) {
+        System.out.println(type + " has been removed from database");
+    }
+
+    public void pressEnterToContinue() {
+        System.out.print("Press enter to continue");
+        scanner.nextLine();
     }
 }

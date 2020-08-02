@@ -1,9 +1,8 @@
-import Controllers.UserController;
+import Controllers.AppController;
+
 
 public class Main {
-    public static void main(String[] args)
-    {
-        UserController.run();
-        //tutaj zmiana potem na AppController
+    public static void main(String[] args) {
+        new AppController().run();
     }
 }

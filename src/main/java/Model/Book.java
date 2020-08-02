@@ -8,13 +8,16 @@ public class Book {
     private float price;
     private int publisher_id;
 
-    public Book(int ISBN, int author_id, String title, int publication_year, float price, int publisher_id) {
+    public Book(int ISBN, int author_id, String title, int publication_year,  int publisher_id, float price) {
         this.ISBN = ISBN;
         this.author_id = author_id;
         this.title = title;
         this.publication_year = publication_year;
         this.publisher_id = publisher_id;
         this.price = price;
+    }
+
+    public Book(int isbn, int author_id, String title, String publisher_id, int publication_year, float price) {
     }
 
 

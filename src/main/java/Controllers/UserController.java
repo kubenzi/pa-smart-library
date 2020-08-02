@@ -1,17 +1,27 @@
 package Controllers;
 
+import DAO.BooksDAO;
+import DAO.PSQLBooksDAO;
+import Model.Book;
 import View.View;
+
+import java.sql.Connection;
+
 
 public class UserController {
 
     private static View view;
+    private final Connection conn;
+    private final BooksDAO booksDAO;
 
-    public UserController() {
+    public UserController(Connection conn, BooksDAO booksDAO) {
         view = new View();
+        this.booksDAO = booksDAO;
+        this.conn = conn;
     }
 
 
-    public static void run(){
+    public void run(){
         view = new View();
         view.clearScreen();
         boolean isRunning = true;
@@ -25,13 +35,12 @@ public class UserController {
 
             switch(input) {
                 case 1:
-                    //Add new book
                     break;
                 case 2:
                     //Update book's data
                     break;
                 case 3:
-                    //Delete book
+                    delete();
                     break;
                 case 4:
                     //Search
@@ -44,8 +53,28 @@ public class UserController {
                     isRunning = false;
                     System.out.println("Bye!");
                 default:
+                    System.out.println("There is no such choice");
             }
         }
 
     }
+
+    protected void delete() {
+        view.clearScreen();
+        System.out.println("Enter title of book to be removed: ");
+        Book book = booksDAO.getBookFromDataBase(view.getStringInput());
+        if (book != null) {
+            view.clearScreen();
+            view.displayConfirmationRequestMessage(book.getTitle());
+            if (view.getStringInput().equalsIgnoreCase("y")) {
+                booksDAO.delete(book);
+                view.displayRemovalMessage("Book");
+                view.pressEnterToContinue();
+            }
+        } else {
+            System.out.println("This book doesn't exist");
+            view.pressEnterToContinue();
+        }
+    }
+
 }
