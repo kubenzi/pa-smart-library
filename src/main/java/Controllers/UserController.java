@@ -6,6 +6,9 @@ import Model.Book;
 import View.View;
 
 import java.sql.Connection;
+import java.util.List;
+
+import static com.diogonunes.jcolor.Ansi.colorize;
 
 
 public class UserController {
@@ -77,4 +80,30 @@ public class UserController {
         }
     }
 
+
+    private Book enterBookData() {
+        String[] answers = new String[] {"", "", "", "", "", ""};
+        String[] fields = {"ISBN", "author_id", "title", "publisher_id", "publication_year", "price"};
+
+        for (int i = 0; i < fields.length ; i++) {
+            displayBookAddScreen(fields[i], answers);
+            answers[i] = view.getStringInput();
+        }
+        return new Book(answers[0], answers[1], answers[2], answers[3], answers[4], Integer.parseInt(answers[5]), Integer.parseInt(answers[6]));
+    }
+
+    private void displayBookAddScreen(String field, String[] answers) {
+        view.clearScreen();
+        System.out.println("Please enter book " + field + "\n");
+        for (int i = 0; i < answers.length; i++) {
+            System.out.println(new String[]{
+                    "ISBN int",
+                    "author_id int",
+                    "title String",
+                    "publisher_id int",
+                    "publication_year int",
+                    "price float"}[i] + ": " + answers[i]);
+        }
+    }
 }
+
