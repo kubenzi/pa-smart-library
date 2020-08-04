@@ -2,7 +2,6 @@ package View;
 
 import java.util.Scanner;
 
-import static com.diogonunes.jcolor.Ansi.colorize;
 
 
 public class View {
@@ -17,7 +16,7 @@ public class View {
 
     public void displayMenuOptions(String[] options) {
         for (int i = 0; i < options.length; i++) {
-            System.out.printf("  |%d| %s", i + 1, options[i]);
+            System.out.printf("|%d| %s", i + 1, options[i]);
             System.out.println();
         }
     }
@@ -40,6 +39,11 @@ public class View {
         return input;
     }
 
+    public long getLongInput() {
+        long input = scanner.nextLong();
+        return input;
+    }
+
     public String getStringInput() {
         String input = scanner.nextLine();
         while (input.isEmpty()) {
@@ -50,7 +54,7 @@ public class View {
     }
 
     public void displayConfirmationRequestMessage(String title) {
-        System.out.printf("  Are you sure you want to remove book entitled: '%s'? [Y/N]%n", title);
+        System.out.printf("Are you sure you want to remove book entitled: '%s'? [Y/N]%n", title);
     }
 
     public void displayRemovalMessage(String type) {

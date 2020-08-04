@@ -1,12 +1,12 @@
 DROP TABLE IF EXISTS books;
 
 CREATE TABLE IF NOT EXISTS books (
-    "ISBN" BIGINT PRIMARY KEY,
-    "author_id" INT REFERENCES authors(ID) NOT NULL,
-    "title" TEXT NOT NULL,
-    "publisher_id" TEXT REFERENCES publishers(id),
-    "publication_year" INT NULL,
-    "price" FLOAT NULL
+    ISBN BIGINT PRIMARY KEY,
+    author_id INT,
+    title varchar(30),
+    publisher_id varchar(30),
+    publication_year INT NULL,
+    price FLOAT NULL
 );
 
 INSERT INTO books VALUES

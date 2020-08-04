@@ -1,31 +1,34 @@
 package Model;
 
 public class Book {
-    private int ISBN;
+    private long ISBN;
     private int author_id;
     private String title;
+    private String publisher_id;
     private int publication_year;
     private float price;
-    private int publisher_id;
 
-    public Book(int ISBN, int author_id, String title, int publication_year,  int publisher_id, float price) {
+
+    public Book(long ISBN, int author_id, String title, String publisher_id, int publication_year, float price) {
         this.ISBN = ISBN;
         this.author_id = author_id;
         this.title = title;
-        this.publication_year = publication_year;
         this.publisher_id = publisher_id;
+        this.publication_year = publication_year;
         this.price = price;
     }
 
-    public Book(int isbn, int author_id, String title, String publisher_id, int publication_year, float price) {
+    public Book(int author_id, String title, String publisher_id, int publication_year, float price){
+        this(999999999, author_id, title, publisher_id, publication_year, price);
     }
 
 
-    public void setISBN(int ISBN) {
+
+    public void setISBN(long ISBN) {
         this.ISBN = ISBN;
     }
 
-    public int getISBN() {
+    public long getISBN() {
         return ISBN;
     }
 
@@ -63,11 +66,11 @@ public class Book {
         this.price = price;
     }
 
-    public int getPublisher_id() {
+    public String getPublisher_id() {
         return publisher_id;
     }
 
-    public void setPublisher_id(int publisher_id) {
+    public void setPublisher_id(String publisher_id) {
         this.publisher_id = publisher_id;
     }
 

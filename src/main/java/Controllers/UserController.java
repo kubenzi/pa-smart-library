@@ -1,20 +1,19 @@
 package Controllers;
 
 import DAO.BooksDAO;
-import DAO.PSQLBooksDAO;
 import Model.Book;
 import View.View;
 
-import java.sql.Connection;
-import java.util.List;
 
-import static com.diogonunes.jcolor.Ansi.colorize;
+import java.sql.Connection;
+import java.util.ArrayList;
+
 
 
 public class UserController {
 
     private static View view;
-    private final Connection conn;
+    public final Connection conn;
     private final BooksDAO booksDAO;
 
     public UserController(Connection conn, BooksDAO booksDAO) {
@@ -38,6 +37,7 @@ public class UserController {
 
             switch(input) {
                 case 1:
+                    add();
                     break;
                 case 2:
                     //Update book's data
@@ -46,13 +46,12 @@ public class UserController {
                     delete();
                     break;
                 case 4:
-                    //Search
+                    showBookByISBN();
                     break;
                 case 5:
-                    //All books
+                    showAllBooks();
                     break;
                 case 6:
-                    //Quit
                     isRunning = false;
                     System.out.println("Bye!");
                 default:
@@ -62,10 +61,16 @@ public class UserController {
 
     }
 
+    protected void update(){
+        view.clearScreen();
+        //to be implemented
+    }
+
     protected void delete() {
         view.clearScreen();
-        System.out.println("Enter title of book to be removed: ");
-        Book book = booksDAO.getBookFromDataBase(view.getStringInput());
+        System.out.println("Enter ISBN of book to be removed: ");
+        Book book = booksDAO.getBookFromDataBase(view.getLongInput());
+        //System.out.println(book);
         if (book != null) {
             view.clearScreen();
             view.displayConfirmationRequestMessage(book.getTitle());
@@ -80,6 +85,32 @@ public class UserController {
         }
     }
 
+    protected  void add() {
+        view.clearScreen();
+        Book book = enterBookData();
+        booksDAO.add(book);
+        System.out.println("Book" + book.getTitle() + "has been added");
+        booksDAO.getBookFromDataBase(book.getISBN());
+        view.pressEnterToContinue();
+    }
+
+    private void showBookByISBN() {
+        view.clearScreen();
+        System.out.println("Enter ISBN: ");
+        Book book = booksDAO.getBookFromDataBase(view.getLongInput());
+        System.out.println(book);
+    }
+
+    private void showAllBooks(){
+        view.clearScreen();
+        System.out.println("Your Library: \n");
+        ArrayList<Book> books = (ArrayList<Book>) booksDAO.getBooksFromDataBase();
+
+        for (int i = 0; i < books.size(); i++) {
+            System.out.println(i+1 + "." + books.get(i));
+        }
+        view.pressEnterToContinue();
+    }
 
     private Book enterBookData() {
         String[] answers = new String[] {"", "", "", "", "", ""};
@@ -89,7 +120,7 @@ public class UserController {
             displayBookAddScreen(fields[i], answers);
             answers[i] = view.getStringInput();
         }
-        return new Book(answers[0], answers[1], answers[2], answers[3], answers[4], Integer.parseInt(answers[5]), Integer.parseInt(answers[6]));
+        return new Book(Long.parseLong(answers[0]), Integer.parseInt(answers[1]), answers[2], answers[3], Integer.parseInt(answers[4]), Integer.parseInt(answers[5]));
     }
 
     private void displayBookAddScreen(String field, String[] answers) {
@@ -97,10 +128,10 @@ public class UserController {
         System.out.println("Please enter book " + field + "\n");
         for (int i = 0; i < answers.length; i++) {
             System.out.println(new String[]{
-                    "ISBN int",
+                    "ISBN long",
                     "author_id int",
                     "title String",
-                    "publisher_id int",
+                    "publisher_id String",
                     "publication_year int",
                     "price float"}[i] + ": " + answers[i]);
         }
