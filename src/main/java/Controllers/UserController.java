@@ -40,7 +40,7 @@ public class UserController {
                     add();
                     break;
                 case 2:
-                    //Update book's data
+                    update();
                     break;
                 case 3:
                     delete();
@@ -63,7 +63,29 @@ public class UserController {
 
     protected void update(){
         view.clearScreen();
-        //to be implemented
+        System.out.println("Enter ISBN of book to be updated: ");
+        Book book = booksDAO.getBookFromDataBase(view.getLongInput());
+        if (book == null) {
+            System.out.println("Book not found in the database");
+            view.pressEnterToContinue();
+        }
+        long ISBN = view.readInputLong(book.getISBN());
+        int author_id = view.readInputInt(book.getAuthor_id());
+        String title = view.readInputString(book.getTitle());
+        String publisher_id = view.readInputString(book.getPublisher_id());
+        int publication_year = view.readInputInt(book.getPublication_year());
+        float price = view.readInputFloat(book.getPrice());
+        book.setISBN(ISBN);
+        book.setAuthor_id(author_id);
+        book.setTitle(title);
+        book.setPublisher_id(publisher_id);
+        book.setPublication_year(publication_year);
+        book.setPrice(price);
+        booksDAO.update(book);
+        Book updatedBook = booksDAO.getBookFromDataBase(ISBN);
+        System.out.println(updatedBook);
+        System.out.println("Book details has been updated");
+        view.pressEnterToContinue();
     }
 
     protected void delete() {

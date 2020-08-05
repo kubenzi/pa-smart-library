@@ -2,6 +2,8 @@ package View;
 
 import java.util.Scanner;
 
+import Model.Book;
+
 
 
 public class View {
@@ -64,5 +66,29 @@ public class View {
     public void pressEnterToContinue() {
         System.out.print("Press enter to continue");
         scanner.nextLine();
+    }
+
+    public String readInputString(String defaultValue) {
+        System.out.print("current value -> " + "'" + defaultValue + "'" + "): ");
+        String input = scanner.nextLine();
+        return input.isEmpty() ? defaultValue : input;
+    }
+
+    public long readInputLong(long defaultValue) {
+        System.out.print("current value -> " + "'" + defaultValue + "'" + "): ");
+        Long input = scanner.nextLong();
+        return input;
+    }
+
+    public int readInputInt(int defaultValue) {
+        System.out.print("current value -> " + "'" + defaultValue + "'" + "): ");
+        int input = scanner.nextInt();
+        return input;
+    }
+
+    public float readInputFloat(float defaultValue) {
+        System.out.print("current value -> " + "'" + defaultValue + "'" + "): ");
+        int input = scanner.nextInt();
+        return input;
     }
 }
