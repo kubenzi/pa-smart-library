@@ -11,6 +11,10 @@ public class Author {
         this.surname = surname;
     }
 
+    public Author(String first_name, String surname){
+        this(1, first_name, surname);
+    }
+
     public int getID() {
         return ID;
     }

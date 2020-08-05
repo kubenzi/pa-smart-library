@@ -2,7 +2,6 @@ package View;
 
 import java.util.Scanner;
 
-import Model.Book;
 
 
 
@@ -23,11 +22,19 @@ public class View {
         }
     }
 
-    public void displayMainMenu() {
-        System.out.println("\n  S M A R T  L I B R A R Y  \n");
-        String[] options = {"Add new book", "Update book's data", "Delete book", "Search", "All books", "Quit"};
-        displayMenuOptions(options);
+    public void displayMainMenu(String command) {
+        if (command == "main") {
+            System.out.println("\n  S M A R T  L I B R A R Y  \n");
+            String[] options = {"Add new book", "Update book's data", "Delete book", "Search", "All books", "Quit"};
+            displayMenuOptions(options);
+        } else if (command == "search") {
+            System.out.println("\n  S E A R C H  \n");
+            String[] options = {"Search by ISBN", "Search by Author"};
+            displayMenuOptions(options);
+        }
     }
+
+
 
     public int getIntegerInput() {
         while(!scanner.hasNextInt()){

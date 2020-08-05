@@ -1,8 +1,6 @@
 package Controllers;
 
-import DAO.BooksDAO;
-import DAO.PSQLBooksDAO;
-import DAO.DataSource;
+import DAO.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,9 +13,10 @@ public class AppController {
 
     public void run() {
         Connection conn = setup();
-        BooksDAO booksDAO = new PSQLBooksDAO(conn);
+        BookDAO bookDAO = new PSQLBookDAO(conn);
+        AuthorDAO authorDAO = new PSQLAuthorDAO(conn);
 
-        new UserController(conn, booksDAO).run();
+        new UserController(conn, bookDAO, authorDAO).run();
 
         try {
             conn.close();

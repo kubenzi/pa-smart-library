@@ -19,7 +19,7 @@ public class Book {
     }
 
     public Book(int author_id, String title, String publisher_id, int publication_year, float price){
-        this(999999999, author_id, title, publisher_id, publication_year, price);
+        this(1, author_id, title, publisher_id, publication_year, price);
     }
 
 

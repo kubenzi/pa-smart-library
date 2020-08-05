@@ -8,16 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class PSQLBooksDAO implements BooksDAO{
+public class PSQLBookDAO implements BookDAO{
     private final Connection conn;
 
-    public PSQLBooksDAO (Connection conn) {
+    public PSQLBookDAO (Connection conn) {
         this.conn = conn;
     }
 
 
     @Override
-    public Book getBookFromDataBase(long ISBN) {
+    public Book getBookFromDataBaseByISBN(long ISBN) {
         String sql = "SELECT * FROM books WHERE ISBN = ?";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
             st.setLong(1, ISBN);
@@ -40,9 +40,32 @@ public class PSQLBooksDAO implements BooksDAO{
     }
 
     @Override
+    public ArrayList<Book> getBooksFromDataBaseByAuthor(int author_id) {
+        ArrayList<Book> booksList = new ArrayList<>();
+        String sql = "SELECT * FROM books WHERE author_id = ?)";
+        try(PreparedStatement st = this.conn.prepareStatement(sql)) {
+            st.setInt(2, author_id);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()){
+                long ISBN = rs.getLong(1);
+                String title = rs.getString(3);
+                String publisher_id = rs.getString(4);
+                int publication_year = rs.getInt(5);
+                float price = rs.getFloat(6);
+                booksList.add(new Book(ISBN, author_id, title, publisher_id, publication_year, price));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error executing query");
+        }
+        return booksList;
+    }
+
+    @Override
     public ArrayList<Book> getBooksFromDataBase() {
         ArrayList<Book> booksList = new ArrayList<>();
-        String sql = "SELECT * FROM books";
+        String sql = "SELECT * FROM books ORDER BY title ASC";
         try(PreparedStatement st = this.conn.prepareStatement(sql);
             ResultSet rs = st.executeQuery()) {
             while (rs.next()){
@@ -54,7 +77,6 @@ public class PSQLBooksDAO implements BooksDAO{
                 float price = rs.getFloat(6);
                 booksList.add(new Book(ISBN, author_id, title, publisher_id, publication_year, price));
             }
-
 
         } catch (SQLException e) {
             System.out.println("Error executing query");

@@ -1,7 +1,9 @@
 package Controllers;
 
-import DAO.BooksDAO;
+import DAO.AuthorDAO;
+import DAO.BookDAO;
 import Model.Book;
+import Model.Author;
 import View.View;
 
 
@@ -14,12 +16,14 @@ public class UserController {
 
     private static View view;
     public final Connection conn;
-    private final BooksDAO booksDAO;
+    private final BookDAO bookDAO;
+    private final AuthorDAO authorDAO;
 
-    public UserController(Connection conn, BooksDAO booksDAO) {
+    public UserController(Connection conn, BookDAO bookDAO, AuthorDAO authorDAO) {
         view = new View();
-        this.booksDAO = booksDAO;
+        this.bookDAO = bookDAO;
         this.conn = conn;
+        this.authorDAO = authorDAO;
     }
 
 
@@ -31,7 +35,7 @@ public class UserController {
         while (isRunning) {
 
             view.clearScreen();
-            view.displayMainMenu();
+            view.displayMainMenu("main");
 
             int input = view.getIntegerInput();
 
@@ -46,7 +50,17 @@ public class UserController {
                     delete();
                     break;
                 case 4:
-                    showBookByISBN();
+                    view.clearScreen();
+                    view.displayMainMenu("search");
+                    int input4 = view.getIntegerInput();
+                    switch(input4) {
+                        case 1:
+                            showBookByISBN();
+                            break;
+                        case 2:
+                            showBooksByAuthor();
+                            break;
+                    }
                     break;
                 case 5:
                     showAllBooks();
@@ -64,7 +78,7 @@ public class UserController {
     protected void update(){
         view.clearScreen();
         System.out.println("Enter ISBN of book to be updated: ");
-        Book book = booksDAO.getBookFromDataBase(view.getLongInput());
+        Book book = bookDAO.getBookFromDataBaseByISBN(view.getLongInput());
         if (book == null) {
             System.out.println("Book not found in the database");
             view.pressEnterToContinue();
@@ -81,8 +95,8 @@ public class UserController {
         book.setPublisher_id(publisher_id);
         book.setPublication_year(publication_year);
         book.setPrice(price);
-        booksDAO.update(book);
-        Book updatedBook = booksDAO.getBookFromDataBase(ISBN);
+        bookDAO.update(book);
+        Book updatedBook = bookDAO.getBookFromDataBaseByISBN(ISBN);
         System.out.println(updatedBook);
         System.out.println("Book details has been updated");
         view.pressEnterToContinue();
@@ -91,13 +105,13 @@ public class UserController {
     protected void delete() {
         view.clearScreen();
         System.out.println("Enter ISBN of book to be removed: ");
-        Book book = booksDAO.getBookFromDataBase(view.getLongInput());
+        Book book = bookDAO.getBookFromDataBaseByISBN(view.getLongInput());
         //System.out.println(book);
         if (book != null) {
             view.clearScreen();
             view.displayConfirmationRequestMessage(book.getTitle());
             if (view.getStringInput().equalsIgnoreCase("y")) {
-                booksDAO.delete(book);
+                bookDAO.delete(book);
                 view.displayRemovalMessage("Book");
                 view.pressEnterToContinue();
             }
@@ -110,26 +124,41 @@ public class UserController {
     protected  void add() {
         view.clearScreen();
         Book book = enterBookData();
-        booksDAO.add(book);
+        bookDAO.add(book);
         System.out.println("Book" + book.getTitle() + "has been added");
-        booksDAO.getBookFromDataBase(book.getISBN());
+        bookDAO.getBookFromDataBaseByISBN(book.getISBN());
         view.pressEnterToContinue();
     }
 
     private void showBookByISBN() {
         view.clearScreen();
         System.out.println("Enter ISBN: ");
-        Book book = booksDAO.getBookFromDataBase(view.getLongInput());
+        Book book = bookDAO.getBookFromDataBaseByISBN(view.getLongInput());
         System.out.println(book);
+    }
+
+    private void showBooksByAuthor(){
+        view.clearScreen();
+        ArrayList<Author> authors = (ArrayList<Author>) authorDAO.getAuthorsFromDataBase();
+        for (int i = 0; i < authors.size(); i++) {
+            System.out.println(i+1 + ". " + authors.get(i));
+        }
+        System.out.println(" ");
+        System.out.println("Enter author_id: ");
+        ArrayList<Book> books = (ArrayList<Book>) bookDAO.getBooksFromDataBaseByAuthor(view.getIntegerInput());
+        for (int i = 0; i < books.size(); i++) {
+            System.out.println(i+1 + ". " + books.get(i));
+        }
+        view.pressEnterToContinue();
     }
 
     private void showAllBooks(){
         view.clearScreen();
         System.out.println("Your Library: \n");
-        ArrayList<Book> books = (ArrayList<Book>) booksDAO.getBooksFromDataBase();
+        ArrayList<Book> books = (ArrayList<Book>) bookDAO.getBooksFromDataBase();
 
         for (int i = 0; i < books.size(); i++) {
-            System.out.println(i+1 + "." + books.get(i));
+            System.out.println(i+1 + ". " + books.get(i));
         }
         view.pressEnterToContinue();
     }

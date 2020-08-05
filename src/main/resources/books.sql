@@ -1,10 +1,10 @@
 DROP TABLE IF EXISTS books;
 
-CREATE TABLE IF NOT EXISTS books (
+CREATE TABLE IF NOT EXISTS books(
     ISBN BIGINT PRIMARY KEY,
-    author_id INT,
-    title varchar(30),
-    publisher_id varchar(30),
+    author_id INT REFERENCES authors(ID) NOT NULL,
+    title varchar(30) NOT NULL,
+    publisher_id varchar(30) REFERENCES publishers(ID),
     publication_year INT NULL,
     price FLOAT NULL
 );

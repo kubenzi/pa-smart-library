@@ -3,9 +3,11 @@ import Model.Book;
 
 import java.util.List;
 
-public interface BooksDAO {
+public interface BookDAO {
 
-    Book getBookFromDataBase (long command);
+    Book getBookFromDataBaseByISBN (long command);
+
+    List<Book> getBooksFromDataBaseByAuthor (int command);
 
     List<Book> getBooksFromDataBase ();
 
@@ -14,7 +16,5 @@ public interface BooksDAO {
     void delete (Book book);
 
     void update (Book book);
-
-
 
 }
