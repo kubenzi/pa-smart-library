@@ -42,9 +42,9 @@ public class PSQLBookDAO implements BookDAO{
     @Override
     public ArrayList<Book> getBooksFromDataBaseByAuthor(int author_id) {
         ArrayList<Book> booksList = new ArrayList<>();
-        String sql = "SELECT * FROM books WHERE author_id = ?)";
-        try(PreparedStatement st = this.conn.prepareStatement(sql)) {
-            st.setInt(2, author_id);
+        String sql = "SELECT * FROM books WHERE author_id = ?";
+        try(PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, author_id);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()){
@@ -57,7 +57,7 @@ public class PSQLBookDAO implements BookDAO{
             }
 
         } catch (SQLException e) {
-            System.out.println("Error executing query");
+            System.out.println("Error executing query: " + e.getMessage());
         }
         return booksList;
     }
@@ -66,7 +66,7 @@ public class PSQLBookDAO implements BookDAO{
     public ArrayList<Book> getBooksFromDataBase() {
         ArrayList<Book> booksList = new ArrayList<>();
         String sql = "SELECT * FROM books ORDER BY title ASC";
-        try(PreparedStatement st = this.conn.prepareStatement(sql);
+        try(PreparedStatement st = conn.prepareStatement(sql);
             ResultSet rs = st.executeQuery()) {
             while (rs.next()){
                 long ISBN = rs.getLong(1);
@@ -79,7 +79,7 @@ public class PSQLBookDAO implements BookDAO{
             }
 
         } catch (SQLException e) {
-            System.out.println("Error executing query");
+            System.out.println("Error executing query " + e.getMessage());
         }
         return booksList;
     }
@@ -108,7 +108,6 @@ public class PSQLBookDAO implements BookDAO{
         String sql = "DELETE FROM books WHERE title = ?";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, book.getTitle());
-
             st.executeUpdate();
 
         } catch (SQLException e) {

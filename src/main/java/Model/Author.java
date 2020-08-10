@@ -38,4 +38,9 @@ public class Author {
     public void setSurname(String surname) {
         this.surname = surname;
     }
+
+    @Override
+    public String toString() {
+        return "ID: " + ID + ", First name: " + first_name + ", Surname: " + surname;
+    }
 }

@@ -59,6 +59,7 @@ public class UserController {
                             break;
                         case 2:
                             showBooksByAuthor();
+
                             break;
                     }
                     break;

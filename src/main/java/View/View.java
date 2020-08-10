@@ -44,7 +44,6 @@ public class View {
         }
         int input = scanner.nextInt();
         scanner.nextLine();
-
         return input;
     }
 
